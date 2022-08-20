@@ -2,7 +2,6 @@ package db
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"time"
 
@@ -38,25 +37,35 @@ func createOnedayTable() {
 }
 
 // table, key를 paramter로 받아서 특정 타입의 slice를 return
-func GetValuesbyKeyAndTable(key, table string, limit int) []string {
-	var value string
-	var values []string
+func SelectPost() map[string]string {
+	var title, body string
+	posts := make(map[string]string)
 
-	query := fmt.Sprintf("SELECT %s FROM %s LIMIT %d", key, table, limit)
+	// query := fmt.Sprintf("SELECT * FROM post")
+	query := "SELECT title, body FROM post"
 	rows, err := DB().Query(query)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	for rows.Next() {
-		err := rows.Scan(&value)
+		err := rows.Scan(&title, &body)
 		if err != nil {
 			log.Fatal(err)
 		}
-		values = append(values, value)
+
+		posts[title] = body
 	}
 
-	return values
+	return posts
+}
+
+func InsertPost(title, body string) {
+	query := "INSERT INTO post (title, body) VALUES(?, ?)"
+	_, err := DB().Exec(query, title, body)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func CloseDB() {
