@@ -48,7 +48,8 @@ func postPost(c *gin.Context) {
 	// json to common.Post (golang struct)
 	json.Unmarshal([]byte(value), &_post)
 
-	db.InsertPost(_post.Title, _post.Body)
+	id := db.InsertPost(_post.Title, _post.Body)
+	_post.Id = uint64(id)
 
 	c.JSON(http.StatusOK, _post)
 }

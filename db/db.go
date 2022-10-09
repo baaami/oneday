@@ -98,12 +98,19 @@ func SelectPost(_id uint64) (uint64, string, string) {
 	return id, title, body
 }
 
-func InsertPost(title, body string) {
+func InsertPost(title, body string) int64 {
 	query := "INSERT INTO post (title, body) VALUES(?, ?)"
-	_, err := DB().Exec(query, title, body)
+	result, err := DB().Exec(query, title, body)
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	nlastId, err := result.LastInsertId()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return nlastId
 }
 
 func ReplacePost(id uint64, title, body string) {
