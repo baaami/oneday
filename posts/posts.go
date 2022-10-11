@@ -8,7 +8,7 @@ import (
 )
 
 func Router(r *gin.RouterGroup) {
-	r.GET("/", GetPosts)
+	r.GET("/list", GetPosts)
 }
 
 /*

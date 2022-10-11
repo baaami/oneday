@@ -13,10 +13,10 @@ import (
 )
 
 func Router(r *gin.RouterGroup) {
-	r.GET("/", GetPost)
-	r.POST("/", PostPost)
-	r.PATCH("/", ReplacePost)
-	r.DELETE("/", DeletePost)
+	r.GET("/read", GetPost)
+	r.POST("/write", PostPost)
+	r.PATCH("/update", ReplacePost)
+	r.DELETE("/delete", DeletePost)
 }
 
 /*

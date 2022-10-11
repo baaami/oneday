@@ -7,6 +7,8 @@ import (
 )
 
 func SetRouter(router *gin.Engine) {
-	post.Router(router.Group("/post"))
-	posts.Router(router.Group("/posts"))
+	api := router.Group("/api")
+
+	post.Router(api.Group("/post"))
+	posts.Router(api.Group("/posts"))
 }
