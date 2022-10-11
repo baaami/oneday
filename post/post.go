@@ -13,16 +13,16 @@ import (
 )
 
 func Router(r *gin.RouterGroup) {
-	r.GET("/", getPost)
-	r.POST("/", postPost)
-	r.PATCH("/", replacePost)
-	r.DELETE("/", deletePost)
+	r.GET("/", GetPost)
+	r.POST("/", PostPost)
+	r.PATCH("/", ReplacePost)
+	r.DELETE("/", DeletePost)
 }
 
 /*
 글 획득
 */
-func getPost(c *gin.Context) {
+func GetPost(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Query("id"), 10, 64)
 	if err != nil {
 		log.Fatal(err)
@@ -37,7 +37,7 @@ func getPost(c *gin.Context) {
 /*
 글 등록
 */
-func postPost(c *gin.Context) {
+func PostPost(c *gin.Context) {
 	body := c.Request.Body
 	value, err := ioutil.ReadAll(body)
 	if err != nil {
@@ -57,7 +57,7 @@ func postPost(c *gin.Context) {
 /*
 글 업데이트
 */
-func replacePost(c *gin.Context) {
+func ReplacePost(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Query("id"), 10, 64)
 	if err != nil {
 		log.Fatal(err)
@@ -78,18 +78,13 @@ func replacePost(c *gin.Context) {
 	c.JSON(http.StatusOK, nil)
 }
 
-func deletePost(c *gin.Context) {
-	body := c.Request.Body
-	value, err := ioutil.ReadAll(body)
+func DeletePost(c *gin.Context) {
+	id, err := strconv.ParseUint(c.Query("id"), 10, 64)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// json to map
-	var _post common.Post
-	json.Unmarshal([]byte(value), &_post)
-
-	db.DeletePost(_post.Id)
+	db.DeletePost(id)
 
 	c.JSON(http.StatusOK, nil)
 }

@@ -8,12 +8,12 @@ import (
 )
 
 func Router(r *gin.RouterGroup) {
-	r.GET("/", getPosts)
+	r.GET("/", GetPosts)
 }
 
 /*
 글 목록 획득
 */
-func getPosts(c *gin.Context) {
+func GetPosts(c *gin.Context) {
 	c.JSON(http.StatusOK, db.SelectPosts())
 }
