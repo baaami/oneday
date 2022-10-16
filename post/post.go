@@ -29,7 +29,7 @@ func GetPost(c *gin.Context) {
 	}
 
 	var _post common.Post
-	_post.Id, _post.Body, _post.Title = db.SelectPost(id)
+	_post.Id, _post.Title, _post.Body = db.SelectPost(id)
 
 	c.JSON(http.StatusOK, _post)
 }
