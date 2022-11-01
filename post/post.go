@@ -21,7 +21,7 @@ func Router(r *gin.RouterGroup) {
 }
 
 /*
-글 획득
+	글 획득
 */
 func GetPost(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Query("id"), 10, 64)
@@ -36,7 +36,7 @@ func GetPost(c *gin.Context) {
 }
 
 /*
-글 등록
+	글 등록
 */
 func PostPost(c *gin.Context) {
 	body := c.Request.Body
@@ -58,7 +58,7 @@ func PostPost(c *gin.Context) {
 }
 
 /*
-글 업데이트
+	글 업데이트
 */
 func ReplacePost(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Query("id"), 10, 64)
