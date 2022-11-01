@@ -22,6 +22,7 @@ func DB() *sql.DB {
 			panic(err)
 		}
 		createOnedayTable()
+		createImageTable()
 
 		db.SetConnMaxLifetime(time.Minute * 3)
 		db.SetMaxOpenConns(10)
@@ -31,18 +32,28 @@ func DB() *sql.DB {
 }
 
 func createOnedayTable() {
+	// Post Table
 	query := `CREATE TABLE IF NOT EXISTS post(
 		id INT primary key auto_increment, 
-		user_id TEXT, 
 		title TEXT,  
 		body TEXT,
-		image1 BLOB,
-		image2 BLOB,
-		image3 BLOB,
-		image4 BLOB,
 		created_at DATETIME DEFAULT CURRENT_TIMESTAMP, 
 		updated_at DATETIME DEFAULT CURRENT_TIMESTAMP)
 		`
+	_, err := DB().Exec(query)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func createImageTable() {
+	// image Table
+	query := `CREATE TABLE IF NOT EXISTS image(
+			id INT primary key auto_increment, 
+			postId INT,  
+			imagePath TEXT,
+			created_at DATETIME DEFAULT CURRENT_TIMESTAMP) 
+			`
 	_, err := DB().Exec(query)
 	if err != nil {
 		panic(err)
@@ -128,7 +139,19 @@ func DeletePost(id uint64) {
 	}
 
 	nRows, err := result.RowsAffected()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	fmt.Println("Delete Post Count :", nRows)
+}
+
+func UploadImage(postId uint64, imagePath string) {
+	query := "INSERT INTO image (postId, imagePath) VALUES(?, ?)"
+	_, err := DB().Exec(query, postId, imagePath)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func CloseDB() {

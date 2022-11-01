@@ -2,6 +2,7 @@ package post
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -47,6 +48,8 @@ func PostPost(c *gin.Context) {
 	var _post common.Post
 	// json to common.Post (golang struct)
 	json.Unmarshal([]byte(value), &_post)
+
+	fmt.Printf("%v", _post)
 
 	id := db.InsertPost(_post.Title, _post.Body)
 	_post.Id = uint64(id)
